@@ -2,6 +2,7 @@
 \usetheme{Madrid}
 
 \usepackage{amssymb}
+\usepackage{mdframed}
 \usepackage{ulem}
 \usepackage[utf8]{inputenc}
 \usepackage{mathtools}
@@ -219,6 +220,8 @@
         \begin{equation}
             f(s)\geq f(t), \forall s\geq t
         \end{equation}
+        y además
+        $f(t)=0,\forall t<0$.
     \end{definicion}
 
     \vfill
@@ -236,6 +239,401 @@
 \end{frame}
 
 
+\subsection{Convolución}
+\begin{frame}{\secname: \subsecname}
+    \begin{definicion}[Convolución min-plus]
+        La convolución
+        min-plus
+        $\otimes$ de dos
+        funciones crecientes
+        $f,g\in\mathcal{F}$
+        se define como
+        \begin{equation}
+            (f\otimes g)(t)
+            =\inf_{0\leq s\leq t}
+            \{f(t-s)+g(s)\}
+        \end{equation}
+    \end{definicion}
+
+    \vfill
+
+    \emph{Nota}: equivalente
+    a la convolución
+    ``clásica'':
+    \begin{equation*}
+        (f\ast g)(t)
+        =\int_0^t
+        f(t-s)g(s)\ ds
+    \end{equation*}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{\secname: \subsecname}
+    Si $f(0)=g(0)=0$ se puede
+    calcular
+    comenzando a dibujar
+    cada función sobre
+    todo punto de la
+    otra y tomando
+    el mínimo.
+    \vfill
+    \begin{figure}[h]
+        \centering
+        \input{figs/min-plus-conv-intuition}
+    \end{figure}
+
+
+    \vfill
+
+    En este ejemplo:
+    $f(t)=rt,
+    g(t)=\beta_{R,T}(t)$
+    con $R>r>0$.
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    Calculemos la
+    convolución min-plus
+    de manera analítica:
+    \begin{equation*}
+        (f\otimes g)(t)
+        =\inf_{0\leq s \leq t}
+        \{f(t-s)+g(s)\}
+        =\inf_{0\leq s \leq t}
+        \{r(t-s)+R[s-T]^+\}
+    \end{equation*}
+
+    \pause
+
+    \emph{Con $T\geq t$}:
+    \begin{equation*}
+        (f\otimes g)(t)
+        =\inf_{0\leq s \leq t}
+        \{r(t-s)+0\}=0
+    \end{equation*}
+
+    \pause
+
+    \emph{Con $T< t$}
+    dividimos en dos casos y
+    tomamos el menor
+        \pause
+    \begin{enumerate}
+        \item $0\leq s\leq T$:
+        \begin{equation*}
+            (f\otimes g)(t)
+        =\inf_{0\leq s \leq T < t}
+        \{r(t-s)+0\}=r(t-T)
+        \end{equation*}
+        \pause
+    \item $T<s$:
+        \begin{equation*}
+            (f\otimes g)(t)
+        =\inf_{T< s \leq t}
+        \{r(t-s)+R(s-T)\}
+        =r(t-T)
+        \end{equation*}
+    \end{enumerate}
+
+    \pause
+    El resultado es:
+    \begin{mdframed}[rightmargin=20em]
+        $(f\otimes g)(t)
+        =r[t-T]^+$.
+    \end{mdframed}
+
+\end{frame}
+
+
+
+\begin{frame}{\secname: EJercicio}
+Calcule la convolución min-plus
+de las función rate-burst
+$\gamma_{r,b}(t)=rt+b$
+y la función rate-latency
+$\beta_{R,T}(t)=R[t-T]^+$.
+Obtenga la solución de manera analítica.
+
+
+Tenemos:
+\begin{equation*}
+(\gamma_{r,b}\otimes \beta_{R,T})(t)
+=\inf_{0\leq s \leq t}\{r(t-s)+b+R[s-T]^+\}
+\end{equation*}
+Con $t\leq T$ tenemos
+\begin{equation*}
+(\gamma_{r,b}\otimes \beta_{R,T})(t)
+=\inf_{0\leq s \leq t}\{r(t-s)+b+0\}=b
+\end{equation*}
+y con $t>T$ tenemos dos casos.
+El primero es $s<T<t$:
+\begin{equation*}
+(\gamma_{r,b}\otimes \beta_{R,T})(t)
+=\inf_{0\leq s \leq T}\{r(t-s)+b+0\}=r(t-T)+b
+\end{equation*}
+y el segundo es $T<s\leq t$
+\begin{equation*}
+(\gamma_{r,b}\otimes \beta_{R,T})(t)
+=\inf_{T< s \leq t}\{r(t-s)+b+R(s-T)\}=r(t-T)+b
+\end{equation*}
+
+Por tanto la solución es
+\begin{equation*}
+(\gamma_{r,b}\otimes \beta_{R,T})(t)
+=r[t-T]^++b
+\end{equation*}
+
+\end{frame}
+
+
+
+
+\begin{frame}{\secname: \subsecname}
+    La convolución min-plus
+    está dotada de las
+    siguientes
+    propiedades en $\mathcal{F}$:
+    \begin{itemize}
+        \item \textbf{Cierre}:
+            $\forall f,g\in\mathcal{F},\quad f\otimes g\in\mathcal{F}$
+        \pause
+        \item \textbf{Asociativa}:
+            $\forall f,g,h\in\mathcal{F},
+            \quad 
+            (f\otimes g)
+            \otimes h
+            =
+            f\otimes
+            (g\otimes h)$
+        \pause
+        \item \textbf{Conmutativa}:
+            $\forall
+            f,g\in\mathcal{F},
+            \quad
+            f\otimes g=
+            g\otimes f$
+        \pause
+    \item \textbf{Elemento neutro\footnote{$\delta_0(t)=+\infty$ con $t>0$ y 0 con $t\leq0$}}:
+            $\exists\delta_0\in\mathcal{F}: \forall f\in\mathcal{F},
+            f\otimes\delta_0=f$
+        \pause
+    \item \textbf{Distrib. con $\land$}:
+        $f,g,h\in\mathcal{F},
+        \quad
+        (f\land g)\otimes h
+        = 
+        (f\otimes h)
+        \land
+        (g\otimes h)$
+    \pause
+    \item \textbf{Suma constante}:
+        $\forall f,g\in\mathcal{F},K\in\mathbb{R}^+,
+        \quad
+        (f+K)\otimes g
+        =(f\otimes g) + K$
+
+    \pause
+    \item \textbf{Isotonicidad}:
+        $\forall f,g,f',g'\in\mathcal{F},\quad
+        f\leq f',g\leq g'
+        \implies
+        f\otimes f'
+        \leq
+        g\otimes g'$
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Deconvolución}
+\begin{frame}{\secname: \subsecname}
+    \begin{definicion}[Deconvolución min-plus]
+        La deconvolución
+        min-plus
+        $\oslash$ de dos
+        funciones crecientes
+        $f,g\in\mathcal{F}$
+        se define como
+        \begin{equation}
+            (f\oslash g)(t)
+            =\sup_{u\geq0}
+            \{f(t+u)-g(u)\}
+        \end{equation}
+    \end{definicion}
+
+    \vfill
+
+    \emph{Truco}:
+    es como la convolución
+    min-plus pero sustituyendo
+    los $+$ por $-$.
+\end{frame}
+
+
+
+
+\begin{frame}{\secname: \subsecname}
+    La deconvolución de
+    $f(t)=\gamma_{r,b}(t)
+    =rt+b$
+    y $g(t)=\beta_{R,T}(t)$
+    es\footnote{con $R>r$}
+    \vfill
+    \begin{figure}[h]
+        \centering
+        \input{figs/min-plus-deconv}
+    \end{figure}
+
+
+    \vfill
+
+    \emph{Nota}: nótese
+    que $(f\oslash g)(t)
+    \notin \mathcal{F}$
+    porque no es cero para
+    $t<0$.
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    Calculemos analíticamente
+    la deconvolución:
+    \begin{equation*}
+        (\gamma_{r,b}
+        \oslash
+        \beta_{R,T})(t)
+        =\sup_{u \geq0}
+        \{
+        \gamma_{r,b}(t+u)
+        - \beta_{R,T}(u)
+        \}
+    \end{equation*}
+    recordando que
+    $\beta_{R,T}(u)=0,
+    t\leq T$ dividimos en dos
+    casos
+    \pause
+    \begin{equation*}
+        (\gamma_{r,b}
+        \oslash
+        \beta_{R,T})(t)
+        =\sup_{T>u \geq0}
+        \{
+        \gamma_{r,b}(t+u)
+        \}
+        \lor
+        \sup_{u>T}
+        \{
+        \gamma_{r,b}(t+u)
+        -
+        \beta_{R,T}(u)
+        \}
+    \end{equation*}
+    \pause
+    en el primer caso
+    $u$ llega a $T$
+    y
+    $\gamma_{r,b}(t+u)=0,
+    t\leq-T$.
+    Por tanto tenemos dos casos
+    \begin{enumerate}
+        \item $t\leq-T$:
+    \begin{multline*}
+        % (\gamma_{r,b}
+        % \oslash
+        % \beta_{R,T})(t)
+        % =
+        0
+        \lor
+        \sup_{-t\geq u>T}
+        \{
+        \gamma_{r,b}(t+u)
+        -
+        \beta_{R,T}(u)
+        \}
+        \lor
+        \sup_{u>-t}
+        \{
+        \gamma_{r,b}(t+u)
+        -
+        \beta_{R,T}(u)
+        \}\\
+        = 0
+        \lor
+        \sup_{-t\geq u>T}
+        \{0-Ru+RT\}
+        \lor
+        \sup_{u>-t}\{ r(t+u)+b
+        -R(u-T)\}\\
+        =0\lor0\lor
+        \{b+R(t+T)\}
+        =[b+R(t+T)]^+
+    \end{multline*}
+    \end{enumerate}
+
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    \begin{enumerate}
+        \setcounter{enumi}{1}
+        \item $t>-T$:
+        \begin{multline*}
+        (\gamma_{r,b}
+        \oslash
+        \beta_{R,T})(t)
+        =\sup_{T>u \geq0}
+        \{
+        \gamma_{r,b}(t+u)
+        \}
+        \lor
+        \sup_{u>T}
+        \{
+        \gamma_{r,b}(t+u)
+        -
+        \beta_{R,T}(u)
+        \}\\
+        =\{ r(t+T)+b \}
+        \lor
+        \sup_{u>T}\{
+            r(t+u)+b
+            -R(u-T)
+        \}\\
+        =\{ r(t+T)+b \}
+        \lor
+        \sup_{u>T}\{
+            (r-R)u+b
+            +rt+RT
+        \}\\
+        =\{ r(t+T)+b \}
+        \lor
+        \{
+            r(t+T)+b
+        \}
+        =r(t+T)+b
+        \end{multline*}
+    \end{enumerate}
+
+    \pause
+    Como resultado se obtiene
+    \begin{equation*}
+        (\gamma_{r,b}
+        \oslash
+        \beta_{R,T})(t)
+        =
+        \begin{cases}
+            [b+R(t+T)]^+,\quad t\leq -T\\
+            r(t+T)+b,\quad t>-T
+        \end{cases}
+    \end{equation*}
+\end{frame}
 
 
 

@@ -1,0 +1,242 @@
+\documentclass[xcolor={x11names}]{beamer}
+\usetheme{Madrid}
+
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{multicol}
+%\usepackage[x11names]{xcolor}
+\usefonttheme{professionalfonts}
+
+
+% Subfigures
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+% License
+\usepackage[
+    type={CC},
+    modifier={by-nc-sa},
+    version={4.0},
+    imagewidth=4pt
+]{doclicense}
+
+
+
+
+% Change base colour beamer@blendedblue (originally RGB: 0.2,0.2,0.7)
+\colorlet{beamer@blendedblue}{DarkSeaGreen4}
+
+
+
+
+
+
+
+%% MATH commands
+\DeclareMathOperator{\Var}{Var}
+
+
+%% THEOREMS
+%\newtheorem{theorem}{Theorem}
+\newtheorem{thm}{Teorema}[section] % the main one
+% Definición
+%\theoremstyle{definition}
+\newtheorem{definicion}{Definición}[section]
+\newtheorem{lema}{Lema}[section]
+
+
+
+%% PFGplots %%
+\usepackage{pgfplots}
+
+%% Exponential distribution
+\pgfmathdeclarefunction{exponential}{1}{%
+  \pgfmathparse{(#1)*exp(-#1*x)}%
+}
+\pgfmathdeclarefunction{exponentialcdf}{1}{%
+  \pgfmathparse{1-exp(-#1*x)}%
+}
+
+%% Poisson distribution
+\pgfmathdeclarefunction{poiss}{1}{%
+  \pgfmathparse{(#1^x)*exp(-#1)/(x!)}%
+}
+
+%% Normal distribution (#1=mu, #2=sigma)
+% John D. Cook approx. https://tex.stackexchange.com/a/124629
+\pgfmathdeclarefunction{normalcdf}{2}{%
+  \pgfmathparse{1/(1 + exp(-0.07056*((x-#1)/#2)^3 - 1.5976*(x-#1)/#2))}%
+}
+
+
+
+
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+
+%%%%%%%%%%
+%% TIKZ %%
+%%%%%%%%%%
+\usepackage{tikz}
+\usepackage{animate}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows, positioning, calc}
+\usetikzlibrary{overlay-beamer-styles}
+\usetikzlibrary{chains,shapes.multipart}
+\usetikzlibrary{scopes}
+\usetikzlibrary{automata}
+\usetikzlibrary{positioning}  %                 ...positioning nodes
+\usetikzlibrary{arrows}       %                 ...customizing arrows
+\usetikzlibrary{intersections}
+
+
+%%%%%%%%%
+%% PGF %%
+%%%%%%%%%
+\usepgfplotslibrary{fillbetween}
+
+
+%%% Insert section name before the section %%%
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+
+\title[Tema 4]{Tema 4: Cálculo de Redes}
+%% \subtitle{Redes y Servicios de Telecomunicaciones (RSTC)\\
+%% Grado en Ingeniería de Tecnologías y Servicios de Telecomunicación}
+%\author{M. Saiful Bari\inst{1} \and Mr X\inst{2}}
+
+\titlegraphic{%
+\includegraphics[height=2cm]{figs/RSTC-grande.png}\\%
+\doclicenseIcon {\tiny \hspace{1em}\doclicenseText}\\%
+\href{https://github.com/MartinPJorge/RSTC-netcal-slides}{\includegraphics[height=1cm]{figs/github-logo.png}}%
+}
+
+\author{\textcolor{white}{RSTC curso 2024-2025}}
+%\author{Jorge Martín Pérez\inst{1}}
+%\institute{
+%    \inst{1}
+%    Departamento de Ingeniería Telemática, Universidad Politécnica de Madrid
+%}
+
+\date{\today}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%% SLIDES START %%%
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+
+%%% TITLE %%%
+\frame{\titlepage }
+
+
+\begin{frame}[allowframebreaks]{Contenido}
+    \tableofcontents
+\end{frame}
+
+
+
+
+\section{Introducción}
+\begin{frame}{\secname}
+    El cálculo de redes modela flujos
+    \begin{itemize}
+        \item electricidad
+        \item fluidos
+        \item \textbf{tráfico en internet}
+    \end{itemize}
+
+    \vfill
+    Nos sirve para modelar:
+    \begin{itemize}
+        \item conformado de tráfico
+        \item políticas de tráfico
+        \item averiguar métricas de
+            lantencia y tamaño en cola
+    \end{itemize}
+\end{frame}
+
+
+
+\section{Álgebra min-plus}
+\begin{frame}{\secname}
+    \begin{definicion}[Álgebra min-plus]
+        Es un diodo\footnote{Un tipo de
+        estructura algebraica.}
+        definido en
+        $(\mathbb{R}\cup \{+\infty\},
+        \land, +)$, donde:
+        \begin{itemize}
+            \item $\land$ es el operador
+                $\min$
+            \item $+$ es la suma
+        \end{itemize}
+    \end{definicion}
+
+    \vfill
+
+    \emph{Ejemplo}:
+
+    la operación
+    \begin{equation*}
+        (1+2)\cdot 3 = 9
+    \end{equation*}
+    se ``traduce'' en:
+    \begin{equation*}
+        (1\land2)+ 3 = 4
+    \end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    \begin{definicion}[Familia de funciónes crecientes]
+        Sea $\mathcal{F}$ el conjunto 
+        de funciones crecientes, decimos
+        que $f\in\mathcal{F}$ es una función
+        creciente definida en
+        $f:\mathbb{R}^+\mapsto\mathbb{R}^+$
+        si y sólo si cumple:
+        \begin{equation}
+            f(s)\geq f(t), \forall s\geq t
+        \end{equation}
+    \end{definicion}
+
+    \vfill
+
+    \emph{Ejemplo}: la función ``rate-latency''
+    $\beta_{R,T}(t)=R[t-T]^+$
+
+
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/rate-latency}
+    \end{figure}
+
+\end{frame}
+
+
+
+
+
+\end{document}

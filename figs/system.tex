@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+    \node[circle,draw]
+        (system)
+        at (0,0) {$\mathcal{S}$};
+
+    \draw[->,ultra thick,Firebrick2]
+        ($(system)-(2,0)$)
+        node[left]
+        {$R$}
+        --
+        (system.west)
+        ;
+
+    \draw[->,ultra thick,DodgerBlue2]
+        (system.east)
+        --
+        ($(system)+(2,0)$)
+        node[right]
+        {$R^*$}
+        ;
+
+    
+\end{tikzpicture}

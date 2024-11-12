@@ -1,0 +1,84 @@
+\begin{tikzpicture}[
+  declare function={
+    ratelatency(\R,\T,\x)= (\x<=\T) * 0   +
+    (\x>\T) * (\R*(\x-\T));
+    }
+]
+\begin{axis}[
+    x=0.5cm,
+    y=1cm,
+    domain=0:5,
+    ymin=0,
+    xmin=0,
+    axis x line=middle,
+    axis y line=middle,
+     xlabel style={
+            anchor=west,
+            at={(ticklabel* cs:1.0)},
+            xshift=5pt
+        },
+        xlabel=$t$,
+    ]
+    \addplot[DodgerBlue3,ultra thick,smooth]
+        {ratelatency(0.5,1,x)};
+    \node[DodgerBlue3] at (axis cs:1.5,1)
+        {$\beta_{R_1,T_1}$};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}[
+  declare function={
+    ratelatency(\R,\T,\x)= (\x<=\T) * 0   +
+    (\x>\T) * (\R*(\x-\T));
+    }
+]
+\begin{axis}[
+    x=0.5cm,
+    y=1cm,
+    domain=0:5,
+    ymin=0,
+    ymax=2,
+    xmin=0,
+    xmax=4,
+    axis x line=middle,
+    axis y line=middle,
+     xlabel style={
+            anchor=west,
+            at={(ticklabel* cs:1.0)},
+            xshift=5pt
+        },
+        xlabel=$t$,
+    ]
+    \addplot[Firebrick3,ultra thick,smooth]
+        {ratelatency(1,2,x)};
+    \node[Firebrick3] at (axis cs:1.5,1)
+        {$\beta_{R_2,T_2}$};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}[
+  declare function={
+    ratelatency(\R,\T,\x)= (\x<=\T) * 0   +
+    (\x>\T) * (\R*(\x-\T));
+    }
+]
+\begin{axis}[
+    x=0.5cm,
+    y=1cm,
+    domain=0:5,
+    ymin=0,
+    ymax=2,
+    xmin=0,
+    axis x line=middle,
+    axis y line=middle,
+     xlabel style={
+            anchor=west,
+            at={(ticklabel* cs:1.0)},
+            xshift=5pt
+        },
+        xlabel=$t$,
+    ]
+    \addplot[Gold3,ultra thick,smooth]
+        {ratelatency(0.5,2,x)};
+    \node[Gold4] at (axis cs:2,1)
+        {$\otimes_i\beta_i$};
+\end{axis}
+\end{tikzpicture}

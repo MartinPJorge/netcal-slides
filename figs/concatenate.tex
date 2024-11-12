@@ -1,0 +1,36 @@
+\begin{tikzpicture}
+    \node[circle,draw]
+        (system)
+        at (0,0) {$\mathcal{S}_1$};
+
+    \node[circle,draw]
+        (system2)
+        at (1,0) {$\mathcal{S}_2$};
+
+    \node
+        (systemdots)
+        at (2,0) {$\ldots$};
+
+    \node[circle,draw]
+        (systemN)
+        at (3,0) {$\mathcal{S}_N$};
+
+
+    \draw[->,ultra thick,Firebrick2]
+        ($(system)-(2,0)$)
+        node[left]
+        {$R$}
+        --
+        (system.west)
+        ;
+
+    \draw[->,ultra thick,DodgerBlue2]
+        (systemN.east)
+        --
+        ($(systemN)+(2,0)$)
+        node[right]
+        {$R^*$}
+        ;
+
+    
+\end{tikzpicture}

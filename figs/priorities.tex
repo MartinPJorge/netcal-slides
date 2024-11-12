@@ -1,0 +1,60 @@
+\begin{tikzpicture}
+
+
+    % queue H
+    \draw
+        (0,-1)
+        --
+        (1.5,-1)
+        --
+        (1.5,-1.5)
+        --
+        (0,-1.5);
+
+
+    % queue H
+    \draw
+        (0,-2)
+        --
+        (1.5,-2)
+        --
+        (1.5,-2.5)
+        --
+        (0,-2.5);
+
+    % H flow
+    \draw[->,ultra thick,Firebrick4]
+        (-1,-1.25)
+        node[left]
+        {$R_H$}
+        --
+        (0,-1.25);
+
+    % L flow
+    \draw[->,ultra thick,Firebrick2]
+        (-1,-2.25)
+        node[left]
+        {$R_L$}
+        --
+        (0,-2.25);
+
+
+    \node[draw,circle]
+        (circle)
+        at
+        (2,-1.75)
+        {$R$};
+
+    \draw[->,ultra thick]
+        (circle)
+        --
+        ($(circle)+(2,0)$)
+        node[midway,above,Firebrick4]
+        {$R^*_H$}
+        node[midway,below,Firebrick2]
+        {$R^*_L$}
+        ;
+
+    
+    
+\end{tikzpicture}

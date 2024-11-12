@@ -352,44 +352,44 @@
 
 
 
-\begin{frame}{\secname: EJercicio}
-Calcule la convolución min-plus
-de las función rate-burst
-$\gamma_{r,b}(t)=rt+b$
-y la función rate-latency
-$\beta_{R,T}(t)=R[t-T]^+$.
-Obtenga la solución de manera analítica.
-
-
-Tenemos:
-\begin{equation*}
-(\gamma_{r,b}\otimes \beta_{R,T})(t)
-=\inf_{0\leq s \leq t}\{r(t-s)+b+R[s-T]^+\}
-\end{equation*}
-Con $t\leq T$ tenemos
-\begin{equation*}
-(\gamma_{r,b}\otimes \beta_{R,T})(t)
-=\inf_{0\leq s \leq t}\{r(t-s)+b+0\}=b
-\end{equation*}
-y con $t>T$ tenemos dos casos.
-El primero es $s<T<t$:
-\begin{equation*}
-(\gamma_{r,b}\otimes \beta_{R,T})(t)
-=\inf_{0\leq s \leq T}\{r(t-s)+b+0\}=r(t-T)+b
-\end{equation*}
-y el segundo es $T<s\leq t$
-\begin{equation*}
-(\gamma_{r,b}\otimes \beta_{R,T})(t)
-=\inf_{T< s \leq t}\{r(t-s)+b+R(s-T)\}=r(t-T)+b
-\end{equation*}
-
-Por tanto la solución es
-\begin{equation*}
-(\gamma_{r,b}\otimes \beta_{R,T})(t)
-=r[t-T]^++b
-\end{equation*}
-
-\end{frame}
+%%% \begin{frame}{\secname: EJercicio}
+%%% Calcule la convolución min-plus
+%%% de las función rate-burst
+%%% $\gamma_{r,b}(t)=rt+b$
+%%% y la función rate-latency
+%%% $\beta_{R,T}(t)=R[t-T]^+$.
+%%% Obtenga la solución de manera analítica.
+%%% 
+%%% 
+%%% Tenemos:
+%%% \begin{equation*}
+%%% (\gamma_{r,b}\otimes \beta_{R,T})(t)
+%%% =\inf_{0\leq s \leq t}\{r(t-s)+b+R[s-T]^+\}
+%%% \end{equation*}
+%%% Con $t\leq T$ tenemos
+%%% \begin{equation*}
+%%% (\gamma_{r,b}\otimes \beta_{R,T})(t)
+%%% =\inf_{0\leq s \leq t}\{r(t-s)+b+0\}=b
+%%% \end{equation*}
+%%% y con $t>T$ tenemos dos casos.
+%%% El primero es $s<T<t$:
+%%% \begin{equation*}
+%%% (\gamma_{r,b}\otimes \beta_{R,T})(t)
+%%% =\inf_{0\leq s \leq T}\{r(t-s)+b+0\}=r(t-T)+b
+%%% \end{equation*}
+%%% y el segundo es $T<s\leq t$
+%%% \begin{equation*}
+%%% (\gamma_{r,b}\otimes \beta_{R,T})(t)
+%%% =\inf_{T< s \leq t}\{r(t-s)+b+R(s-T)\}=r(t-T)+b
+%%% \end{equation*}
+%%% 
+%%% Por tanto la solución es
+%%% \begin{equation*}
+%%% (\gamma_{r,b}\otimes \beta_{R,T})(t)
+%%% =r[t-T]^++b
+%%% \end{equation*}
+%%% 
+%%% \end{frame}
 
 
 
@@ -453,7 +453,10 @@ Por tanto la solución es
 \subsection{Deconvolución}
 \begin{frame}{\secname: \subsecname}
     \begin{definicion}[Deconvolución min-plus]
-        La deconvolución
+        La deconvolución\footnote{No
+        esta definida si
+        $\exists t: f(t)=+\infty
+        $ o $g(t)=+\infty$.}
         min-plus
         $\oslash$ de dos
         funciones crecientes
@@ -635,6 +638,518 @@ Por tanto la solución es
     \end{equation*}
 \end{frame}
 
+
+
+\begin{frame}{\secname: \subsecname}
+    La deconvolución tiene las siguientes
+    propiedades:
+    \begin{enumerate}
+        \item \textbf{Isonoticidad}:
+            $\forall f,g,h\in\mathcal{F},\quad
+            f\leq g\implies
+            f\oslash h\leq g\oslash h,
+            h\oslash f\geq h\oslash g$
+        \item \textbf{Composición}:
+            $\forall f,g,h\in\mathcal{F},\quad
+            (f\oslash g)\oslash h
+            =
+            f\oslash (g\oslash h)
+            $
+        \item \textbf{Composicion con $\otimes$}:
+            $\forall f,g\in\mathcal{F},\quad
+            (f\otimes g)\oslash g
+            \leq
+            f\otimes (g\oslash g)
+            $
+        \item \textbf{Suma de cte.}:
+            $\forall f,g\in\mathcal{F},K\in\mathbb{R},\quad
+            (f+K)\oslash g
+            =
+            (f\oslash g)+K
+            $
+        \item \textbf{Dualidad con $\otimes$}:
+            $f \oslash g\leq h
+            \iff f\leq h\otimes g$
+    \end{enumerate}
+\end{frame}
+
+
+
+
+\subsection{Desviación horizontal y vertical}
+
+\begin{frame}{\secname: \subsecname}
+    \begin{definicion}[Desviación horizontal/Vertical]
+        Sean $f,g\in\mathcal{F}$, su
+        desviación horizontal es
+        \begin{equation*}
+            h(f,g)=\sup_{t\geq0}\left\{
+                \inf_{d\geq0}
+                \{d: f(t)\leq g(t+d)\}
+            \right\}
+        \end{equation*}
+        y su desviación vertical es
+        \begin{equation*}
+            v(f,g)=\sup_{t\geq0}
+            \{f(t)-g(t)\}
+        \end{equation*}
+    \end{definicion}
+\end{frame}
+
+
+
+
+
+\begin{frame}{\secname: \subsecname}
+    Gráficamente las desviaciones
+    verticales y horizontales se ven así:
+
+    \vfill
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/deviations}
+    \end{figure}
+\end{frame}
+
+
+
+
+\begin{frame}{\secname: \subsecname}
+    Otra manera de obtener las desviaciones
+    horizontales y verticales es mediante
+    la deconvolución:
+
+    \vfill
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/deviations-deconv}
+    \end{figure}
+
+    Es decir:
+    \begin{itemize}
+        \item $v(f,g)=(f\oslash g)(0)$
+        \item $h(f,g)=\inf_{d\geq0}
+            \{d: (f\oslash g)(-d)\leq0\}$
+    \end{itemize}
+\end{frame}
+
+
+
+
+\section{Modelado con álgebra min-plus}
+\begin{frame}{\secname}
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/system}
+    \end{figure}
+
+    \vfill
+
+    \begin{itemize}
+        \item $\mathcal{S}$: el sistema
+            atravesado (shaper,router,colas,etc.)
+        \item $R\in\mathcal{F}$: flujo entrante
+        \item $R^*\in\mathcal{F}$:
+            flujo saliente
+    \end{itemize}
+
+    \vfill
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/in-out}
+    \end{figure}
+\end{frame}
+
+
+\subsection{Curvas de llegadas}
+\begin{frame}{\secname: \subsecname}
+    \begin{definicion}[Curva de llegadas]
+        La función $\alpha\in\mathcal{F}$
+        es una curva de llegadas para
+        el flujo $R\in\mathcal{F}$
+        si y solo si
+        \begin{equation*}
+            \forall s\leq t,\quad
+            R(t)-R(s)\leq \alpha(t-s)
+        \end{equation*}
+        También diremos que le flujo $R$
+        es $\alpha$-suave.
+    \end{definicion}
+
+    \vfill
+
+    \emph{Ejemplo}: una curva de
+    llegadas famosa es la función
+    afín $\alpha(t)=rt+b$, también
+    conocida como la curva ``rate-burst''
+    $\gamma_{r,b}(t)$.
+
+    \vfill
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/affine}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{\secname: \subsecname}
+    También, el flujo $R$ es
+    $\alpha$-suave si
+    $R\leq R\otimes \alpha$.
+
+    \vfill
+
+    \emph{Interpretación:}
+    $R$ queda por debajo de $\alpha=
+    \gamma_{r,b}$
+    puesta encima.
+    \begin{figure}[h]
+        \centering
+        \input{figs/in-out-affine}
+    \end{figure}
+\end{frame}
+
+
+
+\subsection{Leaky/Token bucket}
+\begin{frame}{\secname: \subsecname}
+    El tráfico conformado por un
+    \emph{leaky bucket} es
+    $\alpha$-suave con
+    \begin{equation*}
+        \alpha(t)=rt
+    \end{equation*}
+    con $r$ la tasa de pérdidas de la cubeta.
+
+    \vfill
+    
+    \begin{figure}[h]
+        \input{figs/leaky-bucket}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    El tráfico conformado por un
+    \emph{token bucket} es
+    $\alpha$-suave con
+    \begin{equation*}
+        \alpha(t)=\gamma_{r,b}(t)=rt+b
+    \end{equation*}
+    siendo $r$ la tasa de reposición de tokens
+    y $b$ el tamaño de cubeta.
+
+    \vfill
+    
+    \begin{figure}[h]
+        \input{figs/token-bucket}
+    \end{figure}
+\end{frame}
+
+
+\subsection{Mínima curva de llegadas}
+\begin{frame}{\secname: \subsecname}
+
+    \begin{thm}[Mínima curva de llegadas]
+        Sea un flujo real $R\in\mathcal{F}$:
+        \begin{enumerate}
+            \item $R\oslash R$ es
+                una curva de llegada de $R$
+            \item cualquier curva
+                de llegada $\alpha$ para
+                el flujo $R$ satisface
+                $R\oslash R\leq \alpha$
+            \item $R\oslash R$ es
+                una curva de llegadas
+                ``buena''~\cite[Definition.1.2.4]{leboudec}
+        \end{enumerate}
+        $R\oslash R$ se conoce como la
+        mínima curva de llegadas.
+    \end{thm}
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    \cite{leboudec}
+    \begin{figure}
+        \includegraphics[width=.45\textwidth]{figs/min-arrival.png}
+    \end{figure}
+\end{frame}
+
+
+
+
+\subsection{Curvas de servicio}
+\begin{frame}{\secname: \subsecname}
+    \begin{definition}[Curva de servicio]
+        Sea un flujo $R$ atravesando
+        un sistema $\mathcal{S}$,
+        decimos que $\beta\in\mathcal{F}$
+        es una curva de servicio
+        de $R\in\mathcal{F}$ si y solo si
+        \begin{equation*}
+            R^*\geq R\otimes\beta
+        \end{equation*}
+    \end{definition}
+
+    \vfill
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/service-curve}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    La curva de servicio ``rate-latency''
+    es $\beta_{R,T}(t)=R[t-T]^+$.
+
+    \vfill
+
+    La curva de servicio
+    ``burst-delay'' es
+    \begin{equation*}
+        \delta_T(t)=\begin{cases}
+            +\infty,\quad t>T\\
+            0, \quad t\leq T
+        \end{cases}
+    \end{equation*}
+
+    \vfill
+    
+    \begin{figure}[h]
+        \centering
+        \input{figs/service-curves}
+    \end{figure}
+\end{frame}
+
+
+\subsection{Concatenación}
+\begin{frame}{\secname: \subsecname}
+    Si atravesamos $N$ sistemas, cada
+    uno con una curva de servicio
+    $\beta_i,i=1,\ldots,N$; la curva
+    de servicio del sistema total
+    es
+    \begin{equation*}
+        \beta
+        =\beta_1\otimes\beta_2
+        \ldots\otimes\beta_N
+        =\otimes_{i=1}^N\beta_i
+    \end{equation*}
+
+    \vfill
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/concatenate}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    \emph{Ejemplo}: concatenación
+    de curvas rate-latency.
+
+    \begin{equation*}
+        (\beta_{R_1,T_1}\otimes
+        \beta_{R_2,T_2})
+        =\beta_{\min\{R_1,R_2\},T_1+T_2}
+    \end{equation*}
+
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/concatenate-rate-latencies}
+    \end{figure}
+\end{frame}
+
+
+
+
+\section{Resultados fundamentales}
+\subsection{Retardo y backlog}
+\begin{frame}{\secname: \subsecname}
+    \begin{definicion}[Retardo y backlog]
+        Sea un flujo $R\in\mathcal{F}$
+        que al atravesar
+        el sistema $\mathcal{S}$
+        sale como $R^*\in\mathcal{F}$,
+        el retardo de un bit que
+        llega en $t$ se define como
+        \begin{equation*}
+            d(t)=\inf_{\tau>0}
+            \{\tau: R(t)\leq R^*(t+\tau)\}
+        \end{equation*}
+        y el backlog en el instante $t$
+        como
+        \begin{equation*}
+            x(t)=R(t)-R^*(t)
+        \end{equation*}
+    \end{definicion}
+
+    \begin{figure}[h]
+        \centering
+        \input{figs/backlog-delay}
+    \end{figure}
+
+\end{frame}
+
+
+
+\subsection{Cotas retardo/backlog}
+\begin{frame}{\secname: \subsecname}
+    \begin{lema}[Cota retardo/backlog]
+        Sea un flujo $R\in\mathcal{F}$
+        con curva de llegada
+        $\alpha$ que atraviesa un
+        sistema $\mathcal{S}$ con
+        curva de servicio $\beta$,
+        el retardo y backlog cumplen
+        \begin{align*}
+            d(t)&\leq h(\alpha,\beta)\\
+            x(t)&\leq v(\alpha,\beta)
+        \end{align*}
+    \end{lema}
+\end{frame}
+
+
+\begin{frame}{\secname: \subsecname}
+    \emph{Ejemplo}: si tenemos 
+    las curvas $\alpha=\gamma_{r,b}$
+    y $\beta_{R,T}$, las cotas de
+    retardo y backlog son
+    \begin{align*}
+        d(t)\leq \frac{b}{R}+T\\
+        x(t)\leq rT+b
+    \end{align*}
+    \begin{figure}[h]
+        \centering
+        \input{figs/deviations-service}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    \emph{Ejemplo (cont.)}: 
+    recordemos la deconvolución 
+    \begin{equation*}
+        (\gamma_{r,b}
+        \oslash
+        \beta_{R,T})(t)
+        =
+        \begin{cases}
+            [b+R(t+T)]^+,\quad t\leq -T\\
+            r(t+T)+b,\quad t>-T
+        \end{cases}
+    \end{equation*}
+    Recordemos también que la
+    desviación horizontal se puede
+    calcular como
+    $h(\gamma_{r,b},\beta_{R,T})
+    =\inf_{u\geq0}\{
+        d: (\gamma_{r,b}\oslash\beta_{R,T})(-d)
+    \leq0
+    \}$.
+    Buscamos dónde se hace cero la
+    deconvolución:
+    \begin{align*}
+        t&=-(\frac{b}{r}+T),\quad t\leq -T\\
+        t&=-(\frac{b}{R}+T),\quad t>-T
+    \end{align*}
+
+    Por tanto la desviación horizontal es
+    $h(\gamma_{r,b},\beta_{R,T})
+    =\frac{b}{R}+T$.
+
+\end{frame}
+
+
+
+\subsection{Prioridades}
+\begin{frame}{\secname: \subsecname}
+    \begin{lema}[Curvas de servicio
+        sistema con prioridades]
+        Sean dos flujos $R_L,R_H\in\mathcal{F}$
+        con curvas de llegadas
+        $\alpha_L,\alpha_H$
+        que atraviesan un sistema
+        $\mathcal{S}$ con curva de servicio
+        $\beta$ que da prioridad
+        a $R_H$, las curvas 
+        de servicio que experimentan
+        los flujos de alta/baja prioridad
+        son
+        \begin{align*}
+            \beta_H=[\beta-l_{\max}^L]^+\\
+            \beta_L=[\beta-\alpha_H]^+
+        \end{align*}
+        con $l_{\max}^L$ el tamaño máximo
+        de paquete del flujo de baja
+        prioridad.
+    \end{lema}
+\end{frame}
+
+
+
+\begin{frame}{\secname: \subsecname}
+    \emph{Ejemplo:} la cola de
+    prioridad luego atraviesa
+    un sistema con curva de servicio
+    rate latency $\beta_{R,T}$.
+    Además el flujo de prioridad
+    $R_H$ es $\gamma_{r,b}$-suave.
+
+
+    \vfill
+    \begin{figure}[h]
+        \centering
+        \input{figs/priorities}
+    \end{figure}
+    \vfill
+
+    En este caso se tiene
+    \begin{align*}
+        \beta_H=\beta_{R,\tfrac{l_{\max}^L}{R}}\\
+        \beta_L=\beta_{R-r,\tfrac{b}{R-r}}
+    \end{align*}
+
+
+\end{frame}
+
+
+
+\subsection{Weighted Fair Queuing}
+\begin{frame}{\secname: \subsecname}
+    En el caso del WQF cada flujo
+    $i$ recibe un peso
+    $w_i/\sum_{j\neq i}w_j$.
+    Por tanto el flujo $R_i$ experimenta
+    una curva de servicio
+    \begin{equation*}
+        \beta_{\frac{w_i}{\sum_{j\neq i}w_j},0}
+    \end{equation*}
+\end{frame}
+
+
+
+
+\begin{frame}[allowframebreaks]
+        \frametitle{Referencias}
+        \bibliographystyle{amsalpha}
+        \bibliography{refs.bib}
+\end{frame}
 
 
 \end{document}

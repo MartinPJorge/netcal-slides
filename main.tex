@@ -1149,10 +1149,11 @@ Calidad de Servicio\\Cálculo de Redes}
     Por tanto el flujo $R_i$ experimenta
     una curva de servicio
     \begin{equation*}
-        \beta_{\frac{w_i}{\sum_{j\neq i}w_j}C,0}
+        \beta_{\frac{w_i}{\sum_{j\neq i}w_j}C,\tfrac{l_{\max}}{C}}
     \end{equation*}
+    con $l_{\max}$ el máximo tamaño de
+    paquete.
 \end{frame}
-
 
 \subsection{Ejemplo}
 \begin{frame}[allowframebreaks]{\secname: \subsecname}
@@ -1171,13 +1172,17 @@ Calidad de Servicio\\Cálculo de Redes}
             $r=1\,\textrm{Mbps}$
             con ráfagas de
             $b=2\,\textrm{Mb}$
-        \item y sale por un switch on WFQ
+        \item y sale por un switch con WFQ
             y velocidad de transmisión
             de $C=10\,\textrm{Mbps}$ que
             otorga un peso de $\tfrac{1}{20}$
-            al tráfico de baja prioridad
+            al tráfico de baja prioridad.
+            El switch recibe paquetes
+            de tamaño máximo
+            $l_{\max}=500\,\textrm{b}$
     \end{enumerate}
-    ¿Cuál es el retardo máximo que sufrirá
+    \emph{Pregunta}:
+    ¿cuál es el retardo máximo que sufrirá
     el tráfico conformado de baja prioridad?
 
     \framebreak
@@ -1189,13 +1194,14 @@ Calidad de Servicio\\Cálculo de Redes}
         \item servicio baja prioridad
             $\beta_1(t)=[(R-r)t-\tfrac{b}{R-r}]^+=[t-2]^+=\beta_{1,2}$
         \item servicio WFQ
-            $\beta_2(t)=\tfrac{C}{20}t
-            =[\tfrac{1}{2}t-0]^+=\beta_{\tfrac{1}{2},0}$
+            $\beta_2(t)=[\tfrac{C}{20}t
+            -\tfrac{l_{\max}}{C}]^+
+            =[\tfrac{1}{2}t-5\cdot10^{-5}]^+=\beta_{\tfrac{1}{2},5\cdot10^{-5}}$
     \end{itemize}
     La curva de servicio resultante es
     \begin{equation*}
         \beta = \beta_1\otimes\beta_2
-        =\beta_{1,2}\otimes\beta_{\tfrac{1}{2},0}
+        =\beta_{1,2}\otimes\beta_{\tfrac{1}{2},5\cdot10^{-5}}
         =\beta_{\tfrac{1}{2},2}
     \end{equation*}
     el máximo retardo está
@@ -1216,6 +1222,7 @@ Calidad de Servicio\\Cálculo de Redes}
         d(t)\leq h(\alpha,\beta)=4\,\textrm{sec}
     \end{equation*}
 \end{frame}
+
 
 
 \begin{frame}[allowframebreaks]

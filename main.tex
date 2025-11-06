@@ -818,15 +818,20 @@ Calidad de Servicio\\Cálculo de Redes}
 
 
 
-\subsection{Leaky/Token bucket}
-\begin{frame}{\secname: \subsecname}
-    El tráfico conformado por un
-    \emph{leaky bucket} es
+
+
+\subsection{Leaky bucket}
+\begin{frame}{\secname}
+    El tráfico conformado
+    y no descartado
+    por un
+    \emph{leaky bucket} $R(t)$ es
     $\alpha$-suave con
     \begin{equation*}
-        \alpha(t)=rt
+        \alpha(t)=rt+b
     \end{equation*}
-    con $r$ la tasa de pérdidas de la cubeta.
+    con $r$ la tasa de pérdidas de la cubeta
+    y $b$ el tamaño de cubeta.
 
     \vfill
     
@@ -837,22 +842,26 @@ Calidad de Servicio\\Cálculo de Redes}
 
 
 
-\begin{frame}{\secname: \subsecname}
-    El tráfico conformado por un
-    \emph{token bucket} es
-    $\alpha$-suave con
-    \begin{equation*}
-        \alpha(t)=\gamma_{r,b}(t)=rt+b
-    \end{equation*}
-    siendo $r$ la tasa de reposición de tokens
-    y $b$ el tamaño de cubeta.
 
-    \vfill
-    
-    \begin{figure}[h]
-        \input{figs/token-bucket}
-    \end{figure}
-\end{frame}
+
+
+
+%% \begin{frame}{\secname: \subsecname}
+%%     El tráfico conformado por un
+%%     \emph{token bucket} es
+%%     $\alpha$-suave con
+%%     \begin{equation*}
+%%         \alpha(t)=\gamma_{r,b}(t)=rt+b
+%%     \end{equation*}
+%%     siendo $r$ la tasa de reposición de tokens
+%%     y $b$ el tamaño de cubeta.
+%% 
+%%     \vfill
+%%     
+%%     \begin{figure}[h]
+%%         \input{figs/token-bucket}
+%%     \end{figure}
+%% \end{frame}
 
 
 \subsection{Mínima curva de llegadas}
@@ -1145,6 +1154,68 @@ Calidad de Servicio\\Cálculo de Redes}
 \end{frame}
 
 
+\subsection{Ejemplo}
+\begin{frame}[allowframebreaks]{\secname: \subsecname}
+    Considere un tráfico de baja
+    prioridad que 
+    \begin{enumerate}
+        \item se conforma
+            por un leaky bucket
+            $b=2\,\textrm{Mb},
+            r=\tfrac{1}{4}\,\textrm{Mbps}$
+        \item atraviesa un switch con
+            velocidad de rtansmisión de
+            $R=2\,\textrm{Mbps}$
+            con tráfico de alta prioridad
+            a tasa
+            $r=1\,\textrm{Mbps}$
+            con ráfagas de
+            $b=2\,\textrm{Mb}$
+        \item y sale por un switch on WFQ
+            y velocidad de transmisión
+            de $C=10\,\textrm{Mbps}$ que
+            otorga un peso de $\tfrac{1}{20}$
+            al tráfico de baja prioridad
+    \end{enumerate}
+    ¿Cuál es el retardo máximo que sufrirá
+    el tráfico conformado de baja prioridad?
+
+    \framebreak
+
+    \emph{Solución}: 
+    \begin{itemize}
+        \item tráfico conformado
+            $\alpha(t)=\tfrac{1}{4}t+2$
+        \item servicio baja prioridad
+            $\beta_1(t)=[(R-r)t-\tfrac{b}{R-r}]^+=[t-2]^+=\beta_{1,2}$
+        \item servicio WFQ
+            $\beta_2(t)=\tfrac{C}{20}t
+            =[\tfrac{1}{2}t-0]^+=\beta_{\tfrac{1}{2},0}$
+    \end{itemize}
+    La curva de servicio resultante es
+    \begin{equation*}
+        \beta = \beta_1\otimes\beta_2
+        =\beta_{1,2}\otimes\beta_{\tfrac{1}{2},0}
+        =\beta_{\tfrac{1}{2},2}
+    \end{equation*}
+    el máximo retardo está
+    acotado por la desviación
+    horizontal de la curva de llegadas
+    del tráfico conformado $\alpha(t)$
+    con la curva de servicio $\beta(t)$
+
+    \begin{figure}
+        \centering
+        \input{figs/deviations-example}
+    \end{figure}
+
+    Por tanto el retardo siempre está 
+    acotado por la desviacón
+    horizontal
+    \begin{equation*}
+        d(t)\leq h(\alpha,\beta)=4\,\textrm{sec}
+    \end{equation*}
+\end{frame}
 
 
 \begin{frame}[allowframebreaks]

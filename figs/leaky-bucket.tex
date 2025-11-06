@@ -20,9 +20,7 @@
         --
         (1,-3)
         node[pos=.8,right]
-        {$r$}
-        node[below]
-        {$R(t)$};
+        {$r$};
     \draw[|-|]
         (2.2,0)
         --
@@ -32,8 +30,14 @@
 
     \draw[->,thick]
         (1,.5)
-        node[above] {tráfico entrante}
         --
-        (1,0);
+        (1,0)
+        node[right] {$R(t)$};
+    \draw[->,thick]
+        (0,.5)
+        --
+        node[pos=0,anchor=east] {entrante}
+        node[pos=1,anchor=west] {descartado}
+        (3,.5);
 
 \end{tikzpicture}

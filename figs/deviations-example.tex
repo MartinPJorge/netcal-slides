@@ -1,0 +1,80 @@
+\begin{tikzpicture}[
+  declare function={
+    ratelatency(\R,\T,\x)= (\x<=\T) * 0   +
+    (\x>\T) * (\R*(\x-\T));
+    }
+]
+\begin{axis}[
+    x=1cm,
+    y=1cm,
+    domain=0:5,
+    ymin=0,
+    xmin=0,
+    axis x line=middle,
+    axis y line=middle,
+     xlabel style={
+            anchor=west,
+            at={(ticklabel* cs:1.0)},
+            xshift=5pt
+        },
+    xlabel=$t$,
+    legend pos=outer north east,
+    ticks=none
+    ]
+    \addplot[DodgerBlue3,ultra thick,smooth]
+        {ratelatency(0.9,1.3,x)};
+    \addplot[Firebrick3,ultra thick,samples=1000]
+        {(x>0)*(0.3*\x+1.1) + (x<0)*0};
+
+    %\addplot[Gold3,ultra thick,smooth,samples=1000]
+    %    {(x>=-1.3)*(0.3*(\x+1.3)+1.1)+and(x>-2.6,x<-1.3)*(1.1+0.9*\x+0.9*1.3)};
+
+
+
+    \legend{$\beta(t)=[\tfrac{1}{2}t-2]^+$,
+    $\alpha(t)=\tfrac{1}{4}t+2$
+    %,$(f\oslash g)(t)$
+    };
+
+   % \node (burstop) at (axis cs:0.1,1.2){};
+   % \node (burstbottom) at (axis cs:0.1,-.1){};
+   % \draw[|-|](burstop)--(burstbottom)
+   %     node[midway,right]
+   %     {$b$};
+
+   \draw[<->,thick]
+       (axis cs:0,1.1)
+       --
+       (axis cs:2.5,1.1)
+       node[pos=.9,above]
+       {\small $h(\alpha,\beta)$};
+   \node (fourh) at (axis cs:2.5,0) {};
+   \draw[dashed]
+        (axis cs:2.5,1.1)
+        --
+        (axis cs:2.5,0);
+   \node (twoh) at (axis cs:1.3,0) {};
+   \node (twov) at (axis cs:.1,1.1) {};
+
+
+   %\draw[|-|, gray]
+   %    (axis cs:.15,.2)
+   %    --
+   %    (axis cs:1.3,.2)
+   %    node[pos=.9,above]
+   %    {$T$};
+
+   % \draw[|-|, gray]
+   %     (axis cs:-.05,.2)
+   %     --
+   %     (axis cs:-1.3,.2)
+   %     node[midway,above]
+   %     {$T$};
+
+
+\end{axis}
+
+    \node[anchor=north] at (twoh) {$2$};
+    \node[anchor=east] at (twov) {$2$};
+    \node[anchor=north] at (fourh) {$4$};
+\end{tikzpicture}
